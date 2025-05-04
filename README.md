@@ -53,7 +53,4 @@ A powerful, role-based Customer Relationship Management (CRM) system tailored fo
 - 🔍 **Search, Filter, and Sort Functionality**  
   Powerful table utilities for better data visibility and management.
 
----
-
-## 📦 Project Structure
 
