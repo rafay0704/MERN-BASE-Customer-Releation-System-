@@ -1,0 +1,584 @@
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { get, post, put } from '../services/ApiEndpoint';
+import Select from 'react-select';
+import moment from 'moment'; // Make sure to install moment.js if you haven't already
+import { MdFlag, MdPushPin } from "react-icons/md";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // This is for styles
+import Modal from 'react-modal';
+import ClientModal from '../Modals/ClientModal';
+import { FaSpinner } from 'react-icons/fa';
+Modal.setAppElement('#root'); // To avoid accessibility warnings
+const PAGE_SIZE = 20; // Adjust based on the expected number of clients per page
+
+const AllClients = () => {
+    const [clients, setClients] = useState([]);
+    const [selectedClients, setSelectedClients] = useState([]);
+    const [cssUsers, setCssUsers] = useState([]);
+    const [designationCSS, setDesignationCSS] = useState([]);
+    const [selectedCssUser, setSelectedCssUser] = useState('');
+    const [showShiftOptions, setShowShiftOptions] = useState(false);
+    const [statusOptions, setStatusOptions] = useState([]);
+    const [visaCategoryOptions, setVisaCategoryOptions] = useState([]);
+    const [branchLocationOptions, setBranchLocationOptions] = useState([]);
+    const [nationalityOptions, setNationalityOptions] = useState([]);
+    const [sortConfig, setSortConfig] = useState({ key: '', direction: 'asc' });
+    
+    const [flagOptions] = useState([
+        { value: 'green', label: 'Outbounded Clients' },
+        { value: 'yellow', label: 'Non Critical Clients' },
+        { value: 'red', label: 'Critical Clients' },
+    ]);
+    const [filters, setFilters] = useState({ status: [], visaCategory: [], branchLocation: [], nationality: [], cssUser: [], flag: [] });
+    const [flagSortClickCount, setFlagSortClickCount] = useState(0);
+    const [loading, setLoading] = useState(false); // Track loading state
+    const [progress, setProgress] = useState(0); // Track progress
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalData, setModalData] = useState({}); // Data for the currently edited client
+    const [modalType, setModalType] = useState(''); // 'status' or 'stage'
+
+    const openModal = (type, client) => {
+        setModalType(type);
+        setModalData(client);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setModalData({});
+        setModalType('');
+    };
+
+
+
+
+    useEffect(() => {
+        setLoading(true); // Show loading indicator
+
+        const fetchClients = async () => {
+            try {
+                const response = await get('/api/admin/clients');
+                let fetchedClients = response.data.clients;
+
+                // Apply filters to fetched clients
+                if (filters.status.length) {
+                    fetchedClients = fetchedClients.filter(client =>
+                        filters.status.includes(client.Status)
+                    );
+                }
+                if (filters.visaCategory.length) {
+                    fetchedClients = fetchedClients.filter(client =>
+                        filters.visaCategory.includes(client.VisaCatagory)
+                    );
+                }
+                if (filters.branchLocation.length) {
+                    fetchedClients = fetchedClients.filter(client =>
+                        filters.branchLocation.includes(client.BranchLocation)
+                    );
+                }
+                if (filters.nationality.length) {
+                    fetchedClients = fetchedClients.filter(client =>
+                        filters.nationality.includes(client.Nationality)
+                    );
+                }
+                if (filters.cssUser.length) {
+                    fetchedClients = fetchedClients.filter(client => filters.cssUser.includes(client.CSS));
+                }
+
+                if (filters.flag.length) {
+                    fetchedClients = fetchedClients.filter(client => filters.flag.includes(client.Flag));
+                }
+
+                setClients(fetchedClients);
+                setLoading(false); // Hide loading indicator
+
+                // Extract unique filter options and sort alphabetically
+                const uniqueStatuses = [...new Set(response.data.clients.map(client => client.Status))].sort();
+                const uniqueVisaCategories = [...new Set(response.data.clients.map(client => client.VisaCatagory))].sort();
+                const uniqueBranchLocations = [...new Set(response.data.clients.map(client => client.BranchLocation))].sort();
+                const uniqueNationalities = [...new Set(response.data.clients.map(client => client.Nationality))].sort();
+                const uniqueCssUsers = [...new Set(response.data.clients.map(client => client.CSS))].sort();
+
+
+                setStatusOptions(uniqueStatuses.map(status => ({ value: status, label: status })));
+                setVisaCategoryOptions(uniqueVisaCategories.map(category => ({ value: category, label: category })));
+                setBranchLocationOptions(uniqueBranchLocations.map(location => ({ value: location, label: location })));
+                setNationalityOptions(uniqueNationalities.map(nationality => ({ value: nationality, label: nationality })));
+                setCssUsers(uniqueCssUsers.map(css => ({ value: css, label: css }))); // CSS users filter options
+
+            } catch (error) {
+                console.error('Error fetching clients:', error);
+                setLoading(false); // Hide loading indicator
+
+            }
+        };
+
+
+        fetchClients();
+    }, [filters]); // Run fetchClients when filters change
+
+
+    useEffect(() => {
+        const fetchCssUsers = async () => {
+            try {
+                const response = await get('/api/admin/getuser');
+                const cssUsers = response.data.users
+                    .filter(user => user.designation === 'CSS')
+                    .map(user => ({
+                        value: user.name || '', // Default to empty string if name is undefined
+                        label: user.name || '', // Default to empty string if name is undefined
+                    }));
+
+                setDesignationCSS(cssUsers.sort((a, b) => {
+                    const nameA = a.label || ''; // Default to empty string
+                    const nameB = b.label || ''; // Default to empty string
+                    return nameA.localeCompare(nameB);
+                }));
+            } catch (error) {
+                console.error('Error fetching CSS users:', error);
+            }
+        };
+
+
+        fetchCssUsers();
+    }, []);
+
+    const handleModalSave = async (newValue) => {
+        const updatedField = modalType === 'status' ? 'Status' : 'Stage';
+        const updatedClient = { ...modalData, [updatedField]: newValue.value };
+
+        // Optimistic update
+        setClients(clients.map(client =>
+            client.Mou_no === updatedClient.Mou_no ? updatedClient : client
+        ));
+        // setFilteredClients(filteredClients.map(client =>
+        //     client.Mou_no === updatedClient.Mou_no ? updatedClient : client
+        // ));
+
+        // Close modal
+        closeModal();
+
+        // Update backend
+        try {
+            await put(`/api/admin/client/${updatedClient.Mou_no}`, { [updatedField]: newValue.value });
+        } catch (error) {
+            console.error(`Error updating ${updatedField}:`, error);
+        }
+    };
+    const handleFileUpload = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        setLoading(true);
+        setProgress(0); // Reset progress when a new file is selected
+
+        try {
+            // Make POST request with progress tracking
+            await post('/api/admin/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    setProgress(percentCompleted); // Update progress
+                },
+            });
+
+            // Once upload is complete, show success toast
+            toast.success('File uploaded successfully!');
+
+            // Fetch the clients again after successful upload
+            const response = await get('/api/admin/clients');
+            setClients(response.data.clients);
+        } catch (error) {
+            console.error('Error uploading file:', error);
+            toast.error('Error uploading file.');
+        } finally {
+            setLoading(false); // Reset loading state
+        }
+    };
+
+
+    const handleCheckboxChange = (mouNo) => {
+        setSelectedClients((prevSelected) =>
+            prevSelected.includes(mouNo)
+                ? prevSelected.filter((item) => item !== mouNo)
+                : [...prevSelected, mouNo]
+        );
+    };
+
+    const handleShiftCssClick = () => {
+        setShowShiftOptions(!showShiftOptions);
+    };
+
+    const handleShiftCssSubmit = async () => {
+        try {
+            await post('/api/admin/shift-css', {
+                mouNos: selectedClients,
+                cssUser: selectedCssUser,
+            });
+
+            // Refresh the client list
+            const response = await get('/api/admin/clients');
+            setClients(response.data.clients);
+            setSelectedClients([]);
+            setShowShiftOptions(false);
+        } catch (error) {
+            console.error('Error shifting CSS:', error);
+        }
+    };
+
+    const handleSelectAll = () => {
+        if (selectedClients.length === clients.length) {
+            setSelectedClients([]);
+        } else {
+            setSelectedClients(clients.map(client => client.Mou_no));
+        }
+    };
+
+    const handleFilterChange = (selectedOptions, filterType) => {
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            [filterType]: selectedOptions.map(option => option.value),
+        }));
+    };
+
+    const handleSort = (key) => {
+        let direction = 'asc';
+        if (sortConfig.key === key && sortConfig.direction === 'asc') {
+            direction = 'desc';
+        }
+        setSortConfig({ key, direction });
+
+        const sortedClients = [...clients].sort((a, b) => {
+
+
+            if (key === 'PinnedStatus') {
+                return direction === 'asc'
+                    ? a.PinnedStatus.localeCompare(b.PinnedStatus)
+                    : b.PinnedStatus.localeCompare(a.PinnedStatus);
+            }
+            else if (key === 'Flag') {
+                const flagOrder = ['red', 'yellow', 'green'];
+
+                // Determine current sorting order based on click count
+                const currentOrder = (flagSortClickCount % 3);
+                const order = currentOrder === 0
+                    ? flagOrder // red, yellow, green
+                    : currentOrder === 1
+                        ? ['yellow', 'red', 'green'] // yellow, red, green
+                        : ['green', 'yellow', 'red']; // green, yellow, red
+
+                const aIndex = order.indexOf(a.Flag);
+                const bIndex = order.indexOf(b.Flag);
+
+                return aIndex - bIndex; // Sort based on the current order
+            } else if (key === 'Date') {
+                return direction === 'asc'
+                    ? new Date(a[key]) - new Date(b[key])
+                    : new Date(b[key]) - new Date(a[key]);
+            } else {
+                const aKey = a[key].toString().toLowerCase();
+                const bKey = b[key].toString().toLowerCase();
+                if (aKey < bKey) return direction === 'asc' ? -1 : 1;
+                if (aKey > bKey) return direction === 'asc' ? 1 : -1;
+                return 0;
+            }
+        });
+
+        setClients(sortedClients);
+
+        // Increment click count for flag sorting
+        if (key === 'Flag') {
+            setFlagSortClickCount(prevCount => prevCount + 1);
+        }
+    };
+
+
+
+    const getSortIcon = (key) => {
+        if (sortConfig.key !== key) return null;
+        return sortConfig.direction === 'asc' ? '↑' : '↓';
+    };
+
+    // Helper function to render icons based on flag color
+    const getFlagIcon = (flagColor) => {
+        switch (flagColor) {
+            case 'yellow':
+                return <MdFlag className="text-yellow-600" title="High Priority " />;
+            case 'green':
+                return <MdFlag className="text-green-600" title="Completed" />;
+            case 'red':
+                return <MdFlag className="text-red-600" title="Info" />;
+            default:
+                return <span>{flagColor}</span>; // or any default icon
+        }
+    };
+
+    const getPinnedIcon = (pinnedStatus) => {
+        if (pinnedStatus === 'pinned') {
+            return <MdPushPin className="text-blue-500" title="Pinned" />;
+        }
+        return <MdPushPin className="text-gray-400" title="Unpinned" />;
+    };
+
+
+    const formatFlagLabel = (option) => {
+        return (
+            <div className="flex items-center">
+                <MdFlag className={`mr-2 text-${option.value}-600`} title={option.label} />
+                <span>{option.label}</span>
+            </div>
+        );
+    };
+
+
+    return (
+        <div className="p-8 bg-gray-50 min-h-screen">
+           {/* {loading && (
+    <div className="absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-900 to-black opacity-75 backdrop-blur-sm flex flex-col justify-center items-center z-50">
+        <div className="flex items-center justify-center">
+            <FaSpinner className="animate-spin text-blue-400 text-5xl glow-blue" />
+        </div>
+        <p className="mt-4 text-lg font-semibold text-white animate-pulse">
+            Loading, please wait...
+        </p>
+    </div>
+)} */}
+
+            <h1 className="text-4xl font-extrabold mb-8 text-center text-blue-600">All Clients</h1>
+            {/* Dynamic Count Display */}
+            <div className="mb-6 flex items-center justify-between bg-white rounded-lg shadow-lg p-6">
+                <label className="block">
+                    <span className="text-gray-700">Upload Client Excel File</span>
+                    <input
+                        type="file"
+                        accept=".xlsx, .xls, .csv"
+                        onChange={handleFileUpload}
+                        className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 mt-1"
+                        style={{ display: 'block', width: '100%' }}
+                    />
+                </label>
+
+                <button
+                    onClick={handleShiftCssClick}
+                    className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
+                >
+                    Shift CSS
+                </button>
+
+                {loading && (
+                    <div className="ml-4 flex items-center">
+                        <div className="w-24 h-2 bg-gray-200 rounded-full">
+                            <div
+                                className="h-full bg-blue-500 rounded-full"
+                                style={{ width: `${progress}%` }}
+                            ></div>
+                        </div>
+                        <span className="ml-2">{progress}%</span>
+                    </div>
+                )}
+            </div>
+
+
+
+            {/* Filter Options */}
+            <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <Select
+                    options={statusOptions}
+                    isMulti
+                    onChange={(selectedOptions) => handleFilterChange(selectedOptions, 'status')}
+                    placeholder="Filter by Status"
+                    className="w-full border border-gray-300 rounded-lg shadow-sm"
+                />
+                <Select
+                    options={visaCategoryOptions}
+                    isMulti
+                    onChange={(selectedOptions) => handleFilterChange(selectedOptions, 'visaCategory')}
+                    placeholder="Filter by Visa Category"
+                    className="w-full border border-gray-300 rounded-lg shadow-sm"
+                />
+                <Select
+                    options={branchLocationOptions}
+                    isMulti
+                    onChange={(selectedOptions) => handleFilterChange(selectedOptions, 'branchLocation')}
+                    placeholder="Filter by Branch Location"
+                    className="w-full border border-gray-300 rounded-lg shadow-sm"
+                />
+                <Select
+                    options={nationalityOptions}
+                    isMulti
+                    onChange={(selectedOptions) => handleFilterChange(selectedOptions, 'nationality')}
+                    placeholder="Filter by Nationality"
+                    className="w-full border border-gray-300 rounded-lg shadow-sm"
+                />
+
+                <Select
+                    options={cssUsers} // New filter for CSS users
+                    isMulti
+                    onChange={(selectedOptions) => handleFilterChange(selectedOptions, 'cssUser')}
+                    placeholder="Filter by CSS"
+                    className="w-full border border-gray-300 rounded-lg shadow-sm"
+                />
+
+                <Select
+                    options={flagOptions}
+                    isMulti
+                    onChange={(selectedOptions) => handleFilterChange(selectedOptions, 'flag')}
+                    placeholder="Filter by Flag"
+                    className="w-full border border-gray-300 rounded-lg shadow-sm"
+                    formatOptionLabel={formatFlagLabel} // Use the custom label format function
+                />
+
+
+            </div>
+            <div className="mb-4 text-lg">
+                Showing {clients.length} clients
+            </div>
+
+            {/* Shift CSS Options */}
+            {showShiftOptions && (
+                <div className="mb-6 flex items-center">
+                    <label className="mr-4 text-gray-700">Select CSS User:</label>
+                    <Select
+                        options={designationCSS}
+                        onChange={(selectedOption) => setSelectedCssUser(selectedOption.value)}
+                        placeholder="Choose CSS User"
+                        className="w-1/2 border border-gray-300 rounded-lg shadow-sm"
+                    />
+                    <button
+                        onClick={handleShiftCssSubmit}
+                        className="ml-4 bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
+                    >
+                        Confirm Shift
+                    </button>
+                </div>
+            )}
+
+
+            {/* Clients Table */}
+            <div className="overflow-x-auto">
+                <table className="min-w-full bg-white rounded-lg shadow-md text-sm">
+                    <thead className="bg-gray-200">
+                        <tr>
+
+                            <th className="border px-4 py-3">
+                                <input
+                                    type="checkbox"
+                                    checked={selectedClients.length === clients.length}
+                                    onChange={handleSelectAll}
+                                    className="focus:outline-none"
+                                />
+                            </th>
+                            <th className="border px-4 py-3 font-semibold" onClick={() => handleSort('PinnedStatus')}>
+                                Pinned {getSortIcon('PinnedStatus')}
+                            </th>
+                            <th className="border px-4 py-3 font-semibold">Mou_no</th>
+                            <th className="border px-4 py-3 font-semibold cursor-pointer" onClick={() => handleSort('Flag')}>
+                                Flag {getSortIcon('Flag')}
+                            </th>
+
+                            <th className="border px-4 py-3 font-semibold cursor-pointer" onClick={() => handleSort('CustomerName')}>
+                                Customer Name {getSortIcon('CustomerName')}
+                            </th>
+                            <th className="border px-4 py-3 font-semibold cursor-pointer" onClick={() => handleSort('Date')}>
+                                Date {getSortIcon('Date')}
+                            </th>
+                            <th className="border px-4 py-3 font-semibold">Visa</th>
+                            <th className="border px-4 py-3 font-semibold">Phone</th>
+                            <th className="border px-4 py-3 font-semibold">Mobile</th>
+                            <th className="border px-4 py-3 font-semibold cursor-pointer" onClick={() => handleSort('Nationality')}>
+                                Nationality {getSortIcon('Nationality')}
+                            </th>
+                            <th className="border px-4 py-3 font-semibold cursor-pointer" onClick={() => handleSort('BranchLocation')}>
+                                Branch {getSortIcon('BranchLocation')}
+                            </th>
+                            {/* <th className="border px-4 py-3 font-semibold">Advisor</th> */}
+                            <th className="border px-4 py-3 font-semibold">CSS</th>
+                            <th className="border px-4 py-3 font-semibold cursor-pointer" onClick={() => handleSort('Status')}>
+                                Status {getSortIcon('Status')}
+                            </th>
+                            <th className="border px-4 py-3 font-semibold">Stage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {clients.map((client, index) => (
+                            <tr key={`${client.Mou_no}-${index}`} className="hover:bg-gray-100 transition duration-200">
+
+                                {/* <td className="border px-4 py-3">{client.PinnedStatus}</td> */}
+
+                                <td className="border px-4 py-3">
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedClients.includes(client.Mou_no)}
+                                        onChange={() => handleCheckboxChange(client.Mou_no)}
+                                        className="focus:outline-none"
+                                    />
+                                </td>
+                                <td className="border px-4 py-3">{getPinnedIcon(client.PinnedStatus)}</td>
+
+                                {/* <td className="border px-4 py-3">
+                                    <Link to={`/admin/client/${client.Mou_no}`} className="text-blue-600 hover:underline">
+                                        {client.Mou_no}
+                                    </Link>
+                                </td> */}
+
+<td className="border px-4 py-3">
+                                    <Link to={`/admin/client/${client.Mou_no}`} className="text-blue-600 hover:underline">
+                                        {client.Mou_no}
+                                    </Link>
+                                </td>
+                                <td className="border px-4 py-3">{getFlagIcon(client.Flag)}</td>
+                                <td className="border px-4 py-3">{client.CustomerName}</td>
+                                <td className="border px-4 py-3">{client.Date}</td>
+                                <td className="border px-4 py-3">{client.VisaCatagory}</td>
+                                <td className="border px-4 py-3">{client.Phone}</td>
+                                <td className="border px-4 py-3">{client.Mobile}</td>
+                                <td className="border px-4 py-3">{client.Nationality}</td>
+                                <td className="border px-4 py-3">{client.BranchLocation}</td>
+                                {/* <td className="border px-4 py-3">{client.SalesAdvisor}</td> */}
+                                <td className="border px-4 py-3">{client.CSS}</td>
+                                <td className="px-4 py-2">
+                                    <button
+                                        onClick={() => openModal('status', client)}
+                                        className="text-blue-600 underline"
+                                    >
+                                        {client.Status}
+                                    </button>
+                                </td>                                    <td className="px-4 py-2">
+                                    <button
+                                        onClick={() => openModal('stage', client)}
+                                        className="text-blue-600 underline"
+                                    >
+                                        {client.Stage}
+                                    </button>
+                                </td>                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+
+                <ClientModal
+                    isOpen={isModalOpen}
+                    modalData={modalData}
+                    modalType={modalType}
+                    closeModal={closeModal}
+                    handleModalSave={handleModalSave}
+
+                />
+
+            </div>
+        </div>
+    );
+
+
+};
+
+export default AllClients;
+
+
+
+

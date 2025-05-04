@@ -1,0 +1,26 @@
+# Node.js and npm
+node_modules/
+
+# Frontend build (React build)
+frontend/build/
+
+# Backend build
+backend/build/
+
+# .env file (to protect sensitive information)
+.env
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE specific files (optional, e.g., for VSCode)
+.vscode/
+
+# Other potential files to ignore
+*.env.local
+*.env.development
+*.env.production
