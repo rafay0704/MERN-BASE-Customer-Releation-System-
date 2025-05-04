@@ -1,36 +1,59 @@
-💼 A Complete CRM Project Build for Client-Based Businesses
-Deployable Locally and on the Web
+# 💼 Complete CRM System for Client-Based Businesses  
+**Deployable Locally and on the Web**
 
-🔧 Tech Stack
-Frontend: React.js, Tailwind CSS, Axios, Vite
+A powerful, role-based Customer Relationship Management (CRM) system tailored for client-centric businesses. Built using the MERN stack, this application supports admin and role-specific dashboards, task management, Excel uploads, local file storage, and more.
 
-Backend: Node.js, Express.js, MongoDB, JWT Authentication
+---
 
-Others: File Uploads, Admin Role Handling, Environment Config, RESTful APIs
+## 🔧 Tech Stack
 
-🚀 Features
-🔐 Authentication (Login, Register)
+### 💻 Frontend
+- React.js
+- Vite
+- Tailwind CSS
+- Axios
 
-👤 Admin Functionalities (View/Delete, Add Clients, Unified Dashboard)
+### 🖥️ Backend
+- Node.js
+- Express.js
+- MongoDB
+- JWT (Authentication)
 
-📂 Excel File Upload (Client Info Upload via Excel Sheet)
+### ⚙️ Others
+- File Uploads (e.g., profile pictures)
+- RESTful APIs
+- Role-based Access
+- Environment Configuration
 
-📊 Client Details Table (Editable UI)
+---
 
-📝 Task Assignment Based on Roles
+## 🚀 Features
 
-🧠 Role-Based Dashboard Views (Admin, CSS, BP, Review, Submission)
+- 🔐 **Authentication**  
+  Secure login and registration using JWT tokens.
 
-📁 Local File Uploads (e.g., Profile Pictures)
+- 👤 **Admin Functionalities**  
+  View, delete, and add clients. Unified dashboard for overall client and task insights.
 
-🔍 Search, Filter, and Sort Functionality
+- 📂 **Excel File Upload**  
+  Easily upload bulk client data via Excel sheets.
 
-🚀 Deployment Instructions
-✅ Prerequisites
-Node.js (v18+ recommended)
+- 📊 **Editable Client Table**  
+  Searchable, sortable, and filterable client details with real-time edit functionality.
 
-MongoDB (Local or Cloud-based like MongoDB Atlas)
+- 📝 **Task Assignment Based on Roles**  
+  Assign and track tasks with clear role responsibility (CSS, BP, Review, Submission).
 
-Git
+- 🧠 **Role-Based Dashboard Views**  
+  Dynamic dashboards tailored to the logged-in user's role or designation.
 
-Optional: PM2 (for production process management)
+- 📁 **Local File Uploads**  
+  Upload profile pictures or documents saved locally on the server.
+
+- 🔍 **Search, Filter, and Sort Functionality**  
+  Powerful table utilities for better data visibility and management.
+
+---
+
+## 📦 Project Structure
+
