@@ -1,4 +1,4 @@
-# 💼 Complete CRM System for Client-Based Businesses  
+# 💼 MERN Customer Relation Managemnet System for Client-Based Businesses  
 **Deployable Locally and on the Web**
 
 A powerful, role-based Customer Relationship Management (CRM) system tailored for client-centric businesses. Built using the MERN stack, this application supports admin and role-specific dashboards, task management, Excel uploads, local file storage, and more.
