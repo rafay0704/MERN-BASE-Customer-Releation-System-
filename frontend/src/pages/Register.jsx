@@ -23,12 +23,8 @@ const Register = () => {
 
 
   const companyHandlingOptions = [
-    { value: 'VM UAE OFFICE', label: 'VM UAE OFFICE' },
-    { value: 'MC UAE OFFICE', label: 'MC UAE OFFICE' },
-    { value: 'Dev KARACHI OFFICE', label: 'Dev KARACHI OFFICE' },
-    { value: 'Dev QATAR OFFICE', label: 'Dev QATAR OFFICE' },
-    { value: 'DC - DEVISERS CONSULTANCY - (UAE OFFICE)', label: 'DC - DEVISERS CONSULTANCY - (UAE OFFICE)' },
-    { value: 'ALL', label: 'ALL' },
+   
+    { value: 'BR1', label: 'BR2' },
   ];
 
   const handleRegister = async (e) => {
@@ -162,12 +158,8 @@ const Register = () => {
               required
             >
               <option value="">Select Designation</option>
-              <option value="Manager">Manager</option>
-              <option value="CSS">CSS</option>
-              <option value="Business Planner">Business Planner</option>
-              <option value="Software Engineer">Software Engineer </option>
-              <option value="Trainer">Trainer</option>
-              <option value="Submission Specialist">Submission Specialist</option>
+              <option value="Project Manager Test">PM Test</option>
+          
             </select>
           </div>
           <div className="flex flex-col">
