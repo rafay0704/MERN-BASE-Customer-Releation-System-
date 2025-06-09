@@ -32,8 +32,7 @@ const DocumentsHighlightsEB = ({
   return (
     <div className="w-1/2 p-6 border border-gray-300 rounded-lg shadow-md bg-white ml-6">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">
-        Documents, Highlights & Submitted Endorsementbody
-      </h2>
+        Documents, Highlights
       <div className="space-y-2">
         <div>
           <ul className="list-disc pl-5 mt-2">
@@ -100,9 +99,9 @@ const DocumentsHighlightsEB = ({
                       onChange={handleEBEditChange}
                       className="block w-full p-3 border border-gray-300 rounded-lg"
                     >
-                      <option value="Envestor">Envestor</option>
-                      <option value="Innovater">Innovater</option>
-                      <option value="UKES">UKES</option>
+                      <option value="alpha">Alpha </option>
+                      <option value="beta">Beta</option>
+                      
                     </select>
                     <select
                       name="Result"
@@ -181,10 +180,9 @@ const DocumentsHighlightsEB = ({
               onChange={handleEBChange}
               className="w-full p-3 border border-gray-300 rounded-lg"
             >
-              <option value="">Select Endorsing Body</option>
-              <option value="Envestors Limited">Envestors Limited</option>
-              <option value="Innovator International">Innovator International</option>
-              <option value="UK Endorsing Services">UK Endorsing Services</option>
+              <option value="">Select Body</option>
+              <option value="alpha">alpha</option>
+              
             </select>
             <select
               name="Result"
@@ -245,11 +243,9 @@ const DocumentsHighlightsEB = ({
                       onChange={handleHighlightEditChange}
                       className="block w-full p-3 border border-gray-300 rounded-lg"
                     >
-                      <option value="Kids 18+">Kids 18+</option>
-                      <option value="Ilets Expiry">Ilets Expiry</option>
-                      <option value="Process Timeline">Process Timeline</option>
-                      <option value="Residency Visa Expiry">
-                        Residency Visa Expiry
+                      <option value="alpha">alpha</option>
+                         <option value="beta">
+                        beta
                       </option>
                     </select>
                     <input
@@ -318,12 +314,9 @@ const DocumentsHighlightsEB = ({
               className="w-full p-3 border border-gray-300 rounded-lg"
             >
               <option value="">Select Highlight</option>
-              <option value="Kids 18+">Kids 18+</option>
-              <option value="Ilets Expiry">Ilets Expiry</option>
-              <option value="Process Timeline">Process Timeline</option>
-              <option value="Residency Visa Expiry">
-                Residency Visa Expiry
-              </option>
+              <option value="alpha test">alpha test+</option>
+              <option value="beta test">beta test</option>
+            
             </select>
             <input
               type="date"
