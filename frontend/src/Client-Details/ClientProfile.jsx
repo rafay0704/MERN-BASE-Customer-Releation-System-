@@ -167,18 +167,14 @@ const ClientProfile = ({
                     <p><strong>Mou_no:</strong> {client.Mou_no}</p>
                     <p><strong>Date:</strong> {client.Date}</p>
                     <p><strong>Customer Name:</strong> {client.CustomerName}</p>
-                    <p><strong>Visa Category:</strong> {client.VisaCatagory}</p>
                     <p><strong>Mobile:</strong> {client.Mobile}</p>
                     <p><strong>Phone:</strong> {client.Phone}</p>
                     <p><strong>Email:</strong> {client.Email}</p>
                     <p><strong>Nationality:</strong> {client.Nationality}</p>
                     <p><strong>Branch Location:</strong> {client.BranchLocation}</p>
-                    <p><strong>Sales Advisor:</strong> {client.SalesAdvisor}</p>
                     <p><strong>CSS:</strong> {client.CSS}</p>
                     <p><strong>Status:</strong> {client.Status}</p>
                     <p><strong>Language:</strong> {client.Language}</p>
-                    <p><strong>CGID:</strong> {client.CGID}</p>
-                    <p><strong>Password:</strong> {client.Password}</p>
                     <p><strong>Stage:</strong> {client.Stage}</p>
                     <p><strong>Flag:</strong> {client.Flag}</p>
                     <p><strong>Recent Comments:</strong> {client.RecentComments}</p>
