@@ -219,7 +219,7 @@ const handleMediumChange = async (Mou_no, newMedium) => {
           <table className="min-w-full table-auto">
             <thead>
               <tr className="bg-gray-100 border-b">
-                <th className="px-4 py-2 text-left">MOU No</th>
+              
                 <th className="px-4 py-2 text-left">Customer Name</th>
                 <th className="px-4 py-2 text-left">Date</th>
                 <th className="px-4 py-2 text-left">Visa Category</th>
@@ -236,7 +236,6 @@ const handleMediumChange = async (Mou_no, newMedium) => {
               {clients.length > 0 ? (
                 clients.map((client, index) => (
                   <tr key={index} className="border-b">
-                    <td className="px-4 py-2">{client.Mou_no}</td>
                     <td className="px-4 py-2">{client.CustomerName}</td>
                     <td className="px-4 py-2">{moment(client.Date).format("MM/DD/YYYY")}</td>
                     <td className="px-4 py-2">{client.VisaCategory}</td>
