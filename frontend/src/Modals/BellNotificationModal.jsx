@@ -134,7 +134,6 @@ const BellNotificationModal = ({ isOpen, notifications, onClose, user, onActionC
                      
                       <span className="text-blue-600 ml-2">{notification.cssValue}</span>
                     </div>
-                    <p><strong>MOU Number:</strong> {notification.mouNo}</p>
                     <p><strong>Message:</strong> {notification.message}</p>
                   </div>
 
