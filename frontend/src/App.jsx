@@ -20,10 +20,6 @@ import TaskAssign from './CSS Pages/TaskAssign.jsx';
 import CssDashboard from './CSS Pages/CssDashboard.jsx';
 import Client from './Admin Pages/Client.jsx';
 import AllTasks from './Admin Pages/AllTasks.jsx';
-import SoftwareDeveloper from './Software Developer Pages/SoftwareDeveloper.jsx';
-import BusinessPlanner from './Business Planner Pages/BusinessPlanner.jsx';
-import Trainer from './Trainer Pages/Trainer.jsx';
-import Submission from './Submission Pages/Submission.jsx';
 import DailyClients from './CSS Pages/DailyClients.jsx';
 import CSSBatch from './Admin Pages/CSSBatch.jsx';
 import AdminBreakManager from './Admin Pages/AdminBreakManager.jsx';
@@ -51,7 +47,6 @@ const App = () => {
 
   return (
     <>
-      {/* <MarqueeBanner/> */}
       <BrowserRouter>
 
       
@@ -67,32 +62,7 @@ const App = () => {
             <Route path='login' element={<Login />} />
             <Route path='register' element={<Register />} />
           </Route>
-      
-                            {/* Submission LAYOUT */}
-
-
-          <Route path='/submission' element={<SubmissionLayout />}>
-          
-          <Route index element={<Submission />} />
-
-
-
-          </Route>
-                            {/* Trainer LAYOUT */}
-          <Route path='/trainer' element={<TrainerLayout />}>
-          <Route index element={<Trainer />} />
-
-          </Route>
-                                      {/* Bussiness Planer  LAYOUT */}
-
-          <Route path='/businessplaner' element={<BusinessPlanerLayout />}>
-          <Route index element={<BusinessPlanner />} />
-
-          </Route>
-
-                                      {/* Admin LAYOUT */}
-
-          
+                                            {/* Admin LAYOUT */}
 
           <Route path='/admin' element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
@@ -109,7 +79,6 @@ const App = () => {
             <Route path='clientstatuses' element={<ClientStatuses />} />
             <Route path='calender' element={<LeaveCalendar />} />
           </Route>
-                  {/* CSS LAYOUT */}
                   <Route path='/css' element={<CSSLayout />}>
           <Route index element={<CssDashboard />} />
           <Route path='myclients' element={<MyClients />} />
@@ -119,12 +88,7 @@ const App = () => {
           <Route path='alltasks' element={<AllTasks />} />
           <Route path='criticalclients' element={<CriticalClients />} />
 
-          </Route>
-
-          <Route path='/software' element={<SoftwareEngineerLayout />}>
-          <Route index element={<SoftwareDeveloper />} />
-
-          </Route>
+        
           
           
         </Routes>
