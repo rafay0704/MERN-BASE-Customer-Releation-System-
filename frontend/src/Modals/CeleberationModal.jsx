@@ -62,12 +62,8 @@ const NationalHolidayModal = () => {
           {/* Modal */}
           <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-xl z-10 opacity-100">
             <img src={uaeFlagUrl} alt="UAE Flag" className="w-24 mb-4 mx-auto rounded-xl" />
-            <h1 className="text-4xl font-bold text-green-600 mb-4">🎉 UAE National Holidays Celebration! 🎉</h1>
-            <p className="text-lg mb-4">Let's celebrate the spirit of the UAE! 🇦🇪</p>
-            <p className="text-lg mb-4 rtl:mb-4 rtl:text-lg">لنحتفل بروح دولة الإمارات العربية المتحدة! 🇦🇪</p>
-            <p className="text-xl font-semibold mb-4 text-blue-500">Join us in this joyful celebration and let's create beautiful memories together!</p>
-            <p className="text-lg text-yellow-600 mb-6">Celebrate with love, joy, and pride as we honor the UAE's culture, history, and progress! 🌟</p>
-            <button
+            <h1 className="text-4xl font-bold text-green-600 mb-4">🎉  National Holidays Celebration! 🎉</h1>
+              <button
               onClick={() => setIsOpen(false)}
               className="bg-red-500 text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-red-400 transition duration-300"
             >
