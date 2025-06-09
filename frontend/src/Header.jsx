@@ -106,9 +106,9 @@ const TopHeaderBar = () => {
     <>
       <Link to="/admin" className={getMenuLinkClass('/admin')}><FcPieChart  className="mr-1" /> Dashboard</Link>
       <Link to="/admin/clientstatuses" className={getMenuLinkClass('/admin/clientstatuses')}><FcBarChart  className="mr-1" /> Statuses</Link>
-      <Link to="/admin/allclients" className={getMenuLinkClass('/admin/allclients')}><FcConferenceCall  className="mr-1" /> All Clients</Link>
-      <Link to="/admin/cssbatch" className={getMenuLinkClass('/admin/cssbatch')}><FcCustomerSupport  className="mr-1" />20 Daily </Link>
-      <Link to="/admin/criticalclientstat" className={getMenuLinkClass('/admin/criticalclientstat')}><FcHighPriority  className="mr-1" />5 Critical </Link>
+      <Link to="/admin/allclients" className={getMenuLinkClass('/admin/allclients')}><FcConferenceCall  className="mr-1" /> Clients</Link>
+      <Link to="/admin/cssbatch" className={getMenuLinkClass('/admin/cssbatch')}><FcCustomerSupport  className="mr-1" />Routine Client </Link>
+      <Link to="/admin/criticalclientstat" className={getMenuLinkClass('/admin/criticalclientstat')}><FcHighPriority  className="mr-1" />Critical </Link>
       <Link to="/admin/admincheckmanager" className={getMenuLinkClass('/admin/admincheckmanager')}><FcApproval className="mr-1" /> Verification </Link>
 
       <Link to="/admin/adminbreak" className={getMenuLinkClass('/admin/adminbreak')}>
@@ -125,35 +125,13 @@ const TopHeaderBar = () => {
   const CSSMenu = (
     <>
       <Link to="/css" className={getMenuLinkClass('/css')}><FcPieChart className="mr-2" /> Dashboard</Link>
-      <Link to="/css/myclients" className={getMenuLinkClass('/css/myclients')}><FcConferenceCall  className="mr-2" /> My All Clients</Link>
-      <Link to="/css/dailyclients" className={getMenuLinkClass('/css/dailyclients')}><FcCustomerSupport  className="mr-2" />Daily 20 Clients</Link>
-      <Link to="/css/criticalclients" className={getMenuLinkClass('/css/criticalclients')}><FcHighPriority  className="mr-2" />Critical Clients</Link>
+      <Link to="/css/myclients" className={getMenuLinkClass('/css/myclients')}><FcConferenceCall  className="mr-2" /> My Clients</Link>
+      <Link to="/css/dailyclients" className={getMenuLinkClass('/css/dailyclients')}><FcCustomerSupport  className="mr-2" />Routine Clients</Link>
+      <Link to="/css/criticalclients" className={getMenuLinkClass('/css/criticalclients')}><FcHighPriority  className="mr-2" />Critical </Link>
     </>
   );
 
-  const SoftwareDeveloperMenu = (
-    <>
-      <Link to="/software" className={getMenuLinkClass('/software')}><FcPieChart className="mr-2" /> Dashboard</Link>
-    </>
-  );
-
-  const BusinessPlannerMenu = (
-    <>
-      <Link to="/businessplaner" className={getMenuLinkClass('/businessplaner')}><FcPieChart className="mr-2" /> Planner Dashboard</Link>
-    </>
-  );
-
-  const TrainerMenu = (
-    <>
-      <Link to="/trainer" className={getMenuLinkClass('/trainer')}><FcPieChart className="mr-2" /> Dashboard</Link>
-    </>
-  );
-
-  const SubmissionMenu = (
-    <>
-      <Link to="/submission" className={getMenuLinkClass('/submission')}><FcPieChart className="mr-2" /> Dashboard</Link>
-    </>
-  );
+ 
 
 
   const fetchCheckInStatus = async (userId) => {
@@ -271,15 +249,7 @@ const TopHeaderBar = () => {
     switch (user?.designation) {
       case 'CSS':
         return CSSMenu;
-      case 'Software Engineer':
-        return SoftwareDeveloperMenu;
-      case 'Business Planner':
-        return BusinessPlannerMenu;
-      case 'Trainer':
-        return TrainerMenu;
-      case 'Submission Specialist':
-        return SubmissionMenu;
-      default:
+          default:
         return <Link to="/" className="flex items-center text-gray-200 hover:text-gray-300 transition"><FaHome className="mr-2" /> Home</Link>;
     }
   };
