@@ -483,19 +483,16 @@ const handleClickDate = (clientId) => {
         <thead className="bg-gray-200">
             <tr>
                 <th className="px-2 py-1 border-b text-center">Pin</th>
-                <th className="px-2 py-1 border-b text-center">Mou_no</th>
                 <th className="px-2 py-1 border-b text-center">Flag</th>
                 <th className="px-2 py-1 border-b text-center">CustomerName</th>
                 <th className="px-2 py-1 border-b text-center">Date</th>
                 <th className="px-2 py-1 border-b text-center">Email</th>
-                <th className="px-2 py-1 border-b text-center">Phone/Mobile</th>
                 <th className="px-2 py-1 border-b text-center">Comment</th>
                 <th className="px-2 py-1 border-b text-center">Language</th>
                 <th className="px-2 py-1 border-b text-center">Nationality</th>
                 <th className="px-2 py-1 border-b text-center">Industry</th>
                 <th className="px-2 py-1 border-b text-center">Status</th>
-                <th className="px-2 py-1 border-b text-center">CGID</th>
-                <th className="px-2 py-1 border-b text-center">Password</th>
+            
             </tr>
         </thead>
         <tbody>
