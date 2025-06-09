@@ -287,8 +287,7 @@ const handleModalSave = async (newValue) => {
 
   const handleExportToExcel = () => {
     const data = clients.map(client => ({
-      "Mou No": client.Mou_no,
-      "Customer Name": client.CustomerName,
+           "Customer Name": client.CustomerName,
       "Date": formatDateTime(client.Date),
       "Visa Category": client.VisaCatagory,
       "Phone": `${client.Phone} / ${client.Mobile}`,
@@ -369,8 +368,7 @@ const handleModalSave = async (newValue) => {
         <table className="table-auto w-full mt-2 bg-white shadow-md rounded-lg text-xs">
           <thead className="bg-gray-100 text-gray-700">
             <tr>
-              <th className="px-2 py-1 text-left">Mou No</th>
-              <th className="px-2 py-1 text-left">Customer Name</th>
+                            <th className="px-2 py-1 text-left">Customer Name</th>
               <th className="px-2 py-1 text-left">Date</th>
               <th className="px-2 py-1 text-left">Phone</th>
               <th className="px-2 py-1 text-left">Email</th>
@@ -389,7 +387,6 @@ const handleModalSave = async (newValue) => {
               const { comment, name, timestamp } = getLastCommentDetails(client.LatestComments);
               return (
                 <tr key={index} className="border-t border-gray-200 text-sm">
-                  <td className="px-2 py-1">{client.Mou_no} </td>
                   <td className="px-2 py-1">{client.CustomerName}</td>
                   <td className="px-2 py-1">{formatDateTime(client.Date)}</td>
                   <td className="px-2 py-1">  {client.Phone} / {client.Mobile} </td>
