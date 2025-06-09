@@ -76,28 +76,17 @@ const TaskAssign = () => {
 
   const taskOptions = [
     { value: 'Zoom Meeting With Client', label: 'Zoom Meeting With Client' },
-    { value: 'Business Concept', label: 'Business Concept' },
-    { value: 'New Business Plan', label: 'New Business Plan' },
-    { value: 'Initial BP Review', label: 'Initial BP Review' },
-    { value: 'Final BP Review', label: 'Final BP Review' },
-    { value: 'Business Plan Update', label: 'Business Plan Update' },
-    { value: 'Client Feedback/Suggestions', label: 'Client Feedback/Suggestions' },
     { value: 'Supporting Docs', label: 'Supporting Docs' },
     { value: 'PowerPoint Presentation', label: 'PowerPoint Presentation' },
     { value: 'Wireframes', label: 'Wireframes' },
     { value: 'Technical Document', label: 'Technical Document' },
-    { value: 'EB Submission', label: 'EB Submission' },
-    { value: 'EB Feedback', label: 'EB Feedback' },
-    { value: 'Refusal/Appeal EB Response', label: 'Refusal/Appeal EB Response' },
-    { value: 'Home Office Task', label: 'Home Office Task' },
-    { value: 'BP Rework After Refusal', label: 'BP Rework After Refusal' },
+       
   ];
 
   const assignToOptions = [
-    { value: 'Business Planner', label: 'Business Planner' },
+    { value: 'Alpha Team', label: 'Alpha Team' },
     { value: 'Software Developer', label: 'Software Developer' },
-    { value: 'Review Specialist', label: 'Review Specialist' },
-    { value: 'Submission Specialist', label: 'Submission Specialist' },
+ 
   ];
   
   
